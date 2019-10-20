@@ -1,10 +1,10 @@
 /* @flow */
 
-const path = require('path')
+// const path = require('path')
 const serialize = require('serialize-javascript')
 
-import { isJS, isCSS } from '../util'
-import TemplateStream from './template-stream'
+import { isJS, isCSS, extname } from '../util'
+// import TemplateStream from './template-stream'
 import { parseTemplate } from './parse-template'
 import { createMapper } from './create-async-file-mapper'
 import type { ParsedTemplate } from './parse-template'
@@ -55,7 +55,7 @@ export default class TemplateRenderer {
     this.inject = options.inject !== false
     // if no template option is provided, the renderer is created
     // as a utility object for rendering assets like preload links and scripts.
-    
+
     const { template } = options
     this.parsedTemplate = template
       ? typeof template === 'string'
@@ -241,18 +241,19 @@ export default class TemplateRenderer {
     return context._mappedFiles
   }
 
-  // create a transform stream
-  createStream (context: ?Object): TemplateStream {
-    if (!this.parsedTemplate) {
-      throw new Error('createStream cannot be called without a template.')
-    }
-    return new TemplateStream(this, this.parsedTemplate, context || {})
-  }
+  // // create a transform stream
+  // createStream (context: ?Object): TemplateStream {
+  //   if (!this.parsedTemplate) {
+  //     throw new Error('createStream cannot be called without a template.')
+  //   }
+  //   return new TemplateStream(this, this.parsedTemplate, context || {})
+  // }
 }
 
 function normalizeFile (file: string): Resource {
   const withoutQuery = file.replace(/\?.*/, '')
-  const extension = path.extname(withoutQuery).slice(1)
+  const extension = extname(withoutQuery).slice(1)
+
   return {
     file,
     extension,
